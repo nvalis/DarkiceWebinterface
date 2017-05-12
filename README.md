@@ -4,5 +4,7 @@ A simple Flask webinterface for configuring and running [DarkIce](http://darkice
 
 ## Install and run
 
+```bash
 pip install -r requirements.txt
 python3 run.py
+```
