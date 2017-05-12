@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+
+{% block content %}
+	<meta http-equiv="refresh" content="{{ refresh_delay }}">
+	<h1>Status</h1>
+	Reloading every {{ refresh_delay }} seconds
+	<p>Darkice status: {{ darkice_status }}</p>
+{% endblock %}

@@ -1,0 +1,29 @@
+<html>
+  <head>
+    {% if title %}
+      <title>{{ title }} - Darkice Webinterface</title>
+    {% else %}
+      <title>Darkice Webinterface</title>
+    {% endif %}
+
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+  </head>
+  <body>
+    <div class="page">
+      <div class="navigation">
+        <ul>
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          <li><a href="{{ url_for('show_config') }}">Show Config</a></li>
+          <li><a href="{{ url_for('generate_config') }}">Create Config</a></li>
+        </ul>
+      </div>
+      
+      <div class="content">
+        {% for message in get_flashed_messages() %}
+          <div class=flash>{{ message }}</div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </body>
+</html>
