@@ -32,6 +32,9 @@ input[type=submit] {
 	cursor: pointer;
 	font-size: 18px;
 }
+input[type=submit]:hover {
+	background-color: #45a049;
+}
 
 input[type=checkbox] {
 	margin: 8px 0;
@@ -39,15 +42,9 @@ input[type=checkbox] {
 	cursor: pointer;
 }
 
-input[type=submit]:hover {
-	background-color: #45a049;
-}
-
-
 tr {
 	height: 35px;
 }
-
 td {
 	padding-left: 10px;
 	padding-right: 10px;
@@ -55,6 +52,37 @@ td {
 	padding-bottom: 0px;
 }
 
+@keyframes blinking {
+    from {
+    	background-color:#ccc;
+    }
+    50% {
+    	background-color:#e93936;
+    }
+    to {
+    	background-color:#ccc;
+    }
+}
+p.indicator {
+  display: block;
+  margin: 10px;
+}
+p.indicator::before {
+  content: "";
+  float: left;
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin: 1px 10px 0 0;
+}
+p.indicator.on::before {
+	animation: blinking 1.5s infinite alternate;
+
+}
+p.indicator.off::before {
+	background-color: #ccc;
+}
 
 .navigation {
 	background-image: linear-gradient(to bottom,#555 0,#222 100%);
@@ -95,7 +123,7 @@ td {
 	background-color: #f2f2f2;
 }
 
-.config_view {
+.raw_text_view {
 	font-family: monospace;
 	white-space: pre-wrap;
 	padding: 20px 20px;
@@ -106,10 +134,10 @@ td {
 
 @keyframes popup {
   0% {
-    opacity: 0;
+	opacity: 0;
   }
   100% {
-    opacity: 1;
+	opacity: 1;
   }
 }
 
@@ -118,7 +146,7 @@ td {
 	padding: 0.5em;
 	border: 1px solid #aacbe2;
 	border-radius: 5px;
-    display: block;
+	display: block;
 	animation: 2s ease-out 0s 1 popup;
 }
 
@@ -126,8 +154,8 @@ td {
 	background: #f0d6d6;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
-    border: 1px solid #daa4a4;
+	border: 1px solid #daa4a4;
 	border-radius: 4px;
-    display: block;
+	display: block;
 	animation: 2s ease-out 0s 1 popup;
 }

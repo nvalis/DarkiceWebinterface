@@ -4,5 +4,14 @@
 	<meta http-equiv="refresh" content="{{ refresh_delay }}">
 	<h1>Status</h1>
 	Reloading every {{ refresh_delay }} seconds
-	<p>Darkice status: {{ darkice_status }}</p>
+	<form name="darkice_control" method='POST'>
+	{% if darkice_running %}
+		<p class="indicator on">Running</p>
+		<input type="submit" name="submit" value="Stop">
+	{% else %}
+		<p class="indicator off">Not running</p>
+		<input type="submit" name="submit" value="Start">
+	{% endif %}
+	</form>
+	<p class="raw_text_view">{{ output }}</p>
 {% endblock %}

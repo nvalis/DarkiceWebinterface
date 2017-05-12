@@ -2,19 +2,54 @@
 
 import os
 import subprocess
+import shlex
 import configparser
+import fcntl
 
-def get_darkice_process_id():
-	pipe = subprocess.Popen('pidof darkice', shell=True, stdout=subprocess.PIPE).stdout
-	return pipe.read()
+class DarkiceHandler:
+	def __init__(self, config_file_name='darkice.conf'):
+		self.set_config(config_file_name)
+		self.process = None
+		self.output = '--- Initialized'
 
-def get_darkice_status():
-	pid = get_darkice_process_id()
-	print(pid)
-	if pid:
-		return 'Running'
-	else:
-		return 'Not running'
+	def set_config(self, config_file_name):
+		fp = os.path.join('app/configs/', config_file_name)
+		fp = shlex.quote(fp) # get shell-escaped version
+		if not os.path.isfile(fp):
+			print('Could not find: \'{}\''.format(fp))
+		else:
+			self.config_file_path = fp
+
+	def running(self):
+		return bool(self.process)
+
+	def start(self):
+		if not self.process:
+			self.log('--- Starting process...')
+			self.process = subprocess.Popen('darkice -c {}'.format(self.config_file_path), shell=True, stdout=subprocess.PIPE)
+			fcntl.fcntl(self.process.stdout.fileno(), fcntl.F_SETFL, os.O_NONBLOCK) # http://stackoverflow.com/a/8980466
+		else:
+			print('Process already started!')
+
+	def stop(self):
+		if self.process:
+			self.process.terminate()
+			self.process = None
+			self.log('--- Stopped process.')
+		else:
+			print('No process to stop!')
+
+	def log(self, message):
+		self.output += '\n' + message
+
+	def read(self):
+		if self.process:
+			try:
+				out = self.process.stdout.read()
+				if out: self.log(out.decode())
+			except IOError: # no new output
+				pass
+
 
 def generate_config_file(config_dict, file_name='darkice.conf'):
 	config = configparser.ConfigParser()

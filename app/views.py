@@ -1,13 +1,20 @@
-from flask import render_template, flash, redirect
-from app import app
+from flask import render_template, flash, redirect, request
+from app import app, darkice_handler
 from .forms import ConfigForm
 
 from darkice import *
 
 @app.route('/')
-@app.route('/index')
+@app.route('/index', methods=['GET', 'POST'])
 def index():
-	return render_template("index.html", title='Home', darkice_status=get_darkice_status(), refresh_delay=3)
+	output = ''
+	if request.method == 'POST':
+		if request.form['submit'] == 'Start':
+			darkice_handler.start()
+		elif request.form['submit'] == 'Stop':
+			darkice_handler.stop()
+	darkice_handler.read()
+	return render_template("index.html", title='Home', darkice_running=darkice_handler.running(), refresh_delay=3, output=darkice_handler.output)
 
 @app.route('/generate_config', methods=['GET', 'POST'])
 def generate_config():
