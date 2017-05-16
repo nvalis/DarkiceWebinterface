@@ -22,8 +22,6 @@
 {% block content %}
 	<h1>Create Darkice Config</h1>
 	<form action="" method="post" name="config">
-			{{ form.hidden_tag() }}
-
 			<table>
 				{% for field in form %}
 					{{ render_field(field) }}
